@@ -3,18 +3,18 @@ import { useMemo } from 'react';
 import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
-export const CustomTextField = styled(TextField)<{ isTouched?: boolean }>(
-  ({ error, theme, isTouched }) => {
+export const CustomTextField = styled(TextField)<{ touched?: 'true' | 'false' }>(
+  ({ error, theme, touched }) => {
     const successColor = theme.palette.success.main;
     const errorColor = theme.palette.error.main;
     const primaryColor = theme.palette.primary.main;
 
     const resultInputColor = useMemo(() => {
       if (error) return errorColor;
-      if (isTouched) return successColor;
+      if (touched === 'true') return successColor;
 
       return primaryColor;
-    }, [error, errorColor, isTouched, primaryColor, successColor]);
+    }, [error, errorColor, touched, primaryColor, successColor]);
 
     return {
       // input label when focused
