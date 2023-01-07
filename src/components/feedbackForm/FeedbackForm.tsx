@@ -1,18 +1,28 @@
-import { memo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { FormHelperText, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import ReactPhoneInput from 'react-phone-input-material-ui';
 
+import { CustomTextField } from 'components/customTextFIeld/CustomTextField';
+import { fieldHelperTextStyle } from 'components/feedbackForm/styles';
 import { FeedbackFormInitialValues } from 'components/feedbackForm/types';
+import { getErrorHelperText } from 'utils/formikHelpers';
+import { FeedbackFormSchema } from 'utils/validation';
 
 export const FeedbackForm = memo(() => {
+  const { palette } = useTheme();
+  const successColor = palette.success.main;
+  const errorColor = palette.error.main;
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -29,6 +39,7 @@ export const FeedbackForm = memo(() => {
 
       alert(JSON.stringify(dataToSend, null, space));
     },
+    validationSchema: FeedbackFormSchema,
   });
   const [open, setOpen] = useState(false);
 
@@ -40,6 +51,51 @@ export const FeedbackForm = memo(() => {
     setOpen(false);
   };
 
+  const nameErrorHelperText = getErrorHelperText<keyof FeedbackFormInitialValues>(
+    formik.errors,
+    formik.touched,
+    'name',
+  );
+
+  const phoneErrorHelperText = getErrorHelperText<keyof FeedbackFormInitialValues>(
+    formik.errors,
+    formik.touched,
+    'phone',
+  );
+
+  const messageErrorHelperText = getErrorHelperText<keyof FeedbackFormInitialValues>(
+    formik.errors,
+    formik.touched,
+    'message',
+  );
+
+  const nameEndAdornment = useMemo(() => {
+    if (formik.errors.name && formik.touched.name) {
+      return <ErrorOutlineIcon sx={{ color: errorColor }} />;
+    }
+    if (!formik.errors.name && formik.touched.name) {
+      return <CheckCircleOutlineIcon sx={{ color: successColor }} />;
+    }
+  }, [errorColor, successColor, formik.errors.name, formik.touched.name]);
+
+  const phoneEndAdornment = useMemo(() => {
+    if (formik.errors.phone && formik.touched.phone) {
+      return <ErrorOutlineIcon sx={{ color: errorColor }} />;
+    }
+    if (!formik.errors.phone && formik.touched.phone) {
+      return <CheckCircleOutlineIcon sx={{ color: successColor }} />;
+    }
+  }, [errorColor, successColor, formik.errors.phone, formik.touched.phone]);
+
+  const messageEndAdornment = useMemo(() => {
+    if (formik.errors.message && formik.touched.message) {
+      return <ErrorOutlineIcon sx={{ color: errorColor }} />;
+    }
+    if (!formik.errors.message && formik.touched.message) {
+      return <CheckCircleOutlineIcon sx={{ color: successColor }} />;
+    }
+  }, [errorColor, successColor, formik.errors.message, formik.touched.message]);
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -49,15 +105,22 @@ export const FeedbackForm = memo(() => {
         <DialogTitle>Форма обратной связи</DialogTitle>
         <form onSubmit={formik.handleSubmit}>
           <DialogContent>
-            <DialogContentText>Пожалуйста, заполните форму</DialogContentText>
-            <TextField
+            <DialogContentText marginBottom={2}>
+              Пожалуйста, заполните форму
+            </DialogContentText>
+            <CustomTextField
               {...formik.getFieldProps('name')}
-              autoFocus
-              margin="normal"
               id="name"
               label="Имя"
               fullWidth
+              error={!!nameErrorHelperText}
+              InputProps={{
+                endAdornment: nameEndAdornment,
+              }}
             />
+            <FormHelperText error sx={fieldHelperTextStyle}>
+              {nameErrorHelperText}
+            </FormHelperText>
             <ReactPhoneInput
               inputProps={{
                 type: 'phone',
@@ -65,24 +128,35 @@ export const FeedbackForm = memo(() => {
                 label: 'Телефон',
                 name: 'phone',
                 id: 'phone',
-                margin: 'normal',
-                autoFocus: true,
+                error: !!phoneErrorHelperText,
+                InputProps: {
+                  endAdornment: phoneEndAdornment,
+                },
               }}
               value={formik.values.phone}
               onChange={e => formik.setFieldValue('phone', e)}
               onBlur={() => formik.setTouched({ ...formik.touched, phone: true })}
-              component={TextField}
+              component={CustomTextField}
+              placeholder="+7 (999) 999-99-99"
             />
-            <TextField
+            <FormHelperText error sx={fieldHelperTextStyle}>
+              {phoneErrorHelperText}
+            </FormHelperText>
+            <CustomTextField
               {...formik.getFieldProps('message')}
-              autoFocus
-              margin="normal"
               id="message"
               label="Сообщение"
               fullWidth
               multiline
               rows={4}
+              error={!!messageErrorHelperText}
+              InputProps={{
+                endAdornment: messageEndAdornment,
+              }}
             />
+            <FormHelperText error sx={fieldHelperTextStyle}>
+              {messageErrorHelperText}
+            </FormHelperText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
