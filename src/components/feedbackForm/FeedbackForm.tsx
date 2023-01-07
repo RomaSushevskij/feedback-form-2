@@ -117,6 +117,7 @@ export const FeedbackForm = memo(() => {
               InputProps={{
                 endAdornment: nameEndAdornment,
               }}
+              isTouched={formik.touched.name}
             />
             <FormHelperText error sx={fieldHelperTextStyle}>
               {nameErrorHelperText}
@@ -132,6 +133,7 @@ export const FeedbackForm = memo(() => {
                 InputProps: {
                   endAdornment: phoneEndAdornment,
                 },
+                isTouched: formik.touched.phone,
               }}
               value={formik.values.phone}
               onChange={e => formik.setFieldValue('phone', e)}
@@ -153,6 +155,7 @@ export const FeedbackForm = memo(() => {
               InputProps={{
                 endAdornment: messageEndAdornment,
               }}
+              isTouched={formik.touched.message}
             />
             <FormHelperText error sx={fieldHelperTextStyle}>
               {messageErrorHelperText}
