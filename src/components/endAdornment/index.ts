@@ -1,0 +1,1 @@
+export { EndAdornment } from './EndAdornment';

@@ -7,6 +7,7 @@ export type FeedbackFormProps = {
   onSubmit?: (values: SubmitFeedbackFormPayload) => void;
   handleClose?: () => void;
   requestStatus: RequestStatus;
+  isSubmitLoading?: boolean;
 };
 
 export type FeedbackFormInitialValues = {

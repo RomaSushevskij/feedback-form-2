@@ -17,6 +17,7 @@ const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
 export const FeedbackFormSchema: SchemaOf<Omit<FeedbackFormInitialValues, 'rememberMe'>> =
   object().shape({
     name: string()
+      .trim()
       .required(validationPhrases.required)
       .min(endPoints.nameMin, validationPhrases.minMaxName)
       .max(endPoints.nameMax, validationPhrases.minMaxName)

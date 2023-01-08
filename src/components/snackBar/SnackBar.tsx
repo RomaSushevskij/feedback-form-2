@@ -3,7 +3,7 @@ import { FC, forwardRef, memo, SyntheticEvent } from 'react';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-import { SnackBarPropsType } from 'components/snackBar/types';
+import { SnackBarPropsType } from './types';
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
