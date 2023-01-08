@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/feedback-form-2/static/js/main.27c580ef.js",
+    "static/js/787.7ebf1edf.chunk.js": "/feedback-form-2/static/js/787.7ebf1edf.chunk.js",
+    "index.html": "/feedback-form-2/index.html",
+    "main.27c580ef.js.map": "/feedback-form-2/static/js/main.27c580ef.js.map",
+    "787.7ebf1edf.chunk.js.map": "/feedback-form-2/static/js/787.7ebf1edf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.27c580ef.js"
+  ]
+}
